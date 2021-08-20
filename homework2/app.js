@@ -11,7 +11,6 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 
-
 app.use(express.static(path.join(__dirname, 'static')));
 app.set('view engine', '.hbs');
 app.engine('.hbs', expressHbs({defaultLayout: false}));
@@ -28,20 +27,15 @@ app.get('/login', (req, res) => {
 });
 app.get('/registration', (req, res) => {
 
-    if (!email ===-1){
-        res.status(201).end('Your Registration Is Successful');
-        return;
-    }
-    res.status(401).end('You are already registred')
+       res.render('registration');
 });
-app.post('/users', (req, res) => {
-    res.json({users})
-});
-
 
 app.get('/users', (req, res) => {
-    res.render('users', {users})
+
+    res.render('users', {users});
+
 });
+
 app.get('/users/:user_id', ((req, res) => {
     const {user_id} = req.params;
     console.log(req.query);
@@ -53,13 +47,39 @@ app.get('/users/:user_id', ((req, res) => {
     }
     res.json(currentUser);
 }));
+app.post('/registration', (req, res) => {
+    const {email, password} =req.body;
+    res.json({users});
+});
+
+app.post('/login', (req, res) => {
+    if (user.email === email && user.password === password ) {
+        res.json({users})
+
+    };
+    if (user.email === email && !user.password === password){
+        res.json('Check the password');
+
+    };
+    if (!user.email===email){
+        res.json('./registration');
+
+    };
+    res.status(204).end('NO CONTENT');
+
+
+});
 
 
 app.post('/users', (req, res) => {
-    const {email, password} =req.body;
-    res.json( {users});
+
+res.json({users})
+
 
 });
+
+
+
 
 
 app.listen(PORT, ()=>{
